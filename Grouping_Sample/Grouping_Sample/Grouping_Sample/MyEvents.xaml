@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Events"
+             xmlns:local="clr-namespace:Grouping_Sample"
+             x:Class="Grouping_Sample.MyEvents">
+
+    <ContentPage.BindingContext>
+        <local:MyEventsViewmodel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:DateConverter x:Key="dateConverter"></local:DateConverter>
+            <local:DayConverter x:Key="dayConverter"></local:DayConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid>
+            <StackLayout
+                Orientation="Vertical"
+                BackgroundColor="White">
+
+                <StackLayout
+                    Orientation="Horizontal"
+                    x:Name="events_layout"
+                    HorizontalOptions="FillAndExpand"
+                    Margin="3,20,3,3">
+
+                    <Frame
+                    x:Name="Upcoming_layout"
+                            Padding="8"
+                            Margin="8,0,0,0"
+                        OutlineColor="#DCDCDC"
+                            HorizontalOptions="FillAndExpand"
+                            CornerRadius="20"
+                            BackgroundColor="#0091da">
+
+                        <Label 
+                        x:Name="Upcoming_label"
+                            HorizontalOptions="CenterAndExpand"
+                        Text="Upcoming Events"
+                        HorizontalTextAlignment="Center"
+                        FontSize="18"
+                        TextColor="#FFFFFF"/>
+                    </Frame>
+
+                    <Frame
+                    x:Name="All_layout"
+                        OutlineColor="#DCDCDC"
+                            HorizontalOptions="FillAndExpand"
+                            CornerRadius="20"
+                            Margin="0,0,8,0"
+                            Padding="8"
+                            BackgroundColor="#FFFFF">
+
+                        <Label 
+                                Text="All Events"
+                        x:Name="allevents_label"
+                        HorizontalTextAlignment="Center"
+                            HorizontalOptions="CenterAndExpand"
+                         FontSize="18"
+                        TextColor="#aee4ff"/>
+                    </Frame>
+                </StackLayout>
+
+                <!--add IsGroupingEnabled GroupShortNameBinding GroupDisplayBinding here-->
+                <ListView x:Name="MyEventsListview"
+                          RefreshCommand="{Binding RefreshCommand}"
+                          IsRefreshing="{Binding IsRefreshing}"
+                          IsPullToRefreshEnabled="True"
+                          HasUnevenRows="True"
+                          ItemsSource="{Binding AllItems,Mode=TwoWay}"
+                          BackgroundColor="White"
+                          IsGroupingEnabled="True"
+                          GroupDisplayBinding="{Binding month}"
+                          GroupShortNameBinding="{Binding month}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.View>
+
+                                    <StackLayout
+                                        Padding="5"
+                                        Margin="5"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="FillAndExpand"
+                                        Orientation="Vertical">
+
+                                        <Label 
+                                            Text="{Binding month}"
+                                            Font="16" 
+                                            HorizontalOptions="CenterAndExpand"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center"
+                                            TextColor="#3f3f3f"
+                                            VerticalOptions="Center"/>
+
+                                        <StackLayout
+                                    HorizontalOptions="StartAndExpand"
+                                    VerticalOptions="FillAndExpand"
+                                    Orientation="Horizontal">
+
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="50*" />
+                                                    <ColumnDefinition Width="50*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackLayout
+                                                Grid.Column="0"
+                                                Orientation="Vertical">
+                                                    <!--update: use startDate startTime directly instead of eventTO.startDate-->
+                                                    <Label 
+                                                Text="{Binding startDate,  Converter={StaticResource dayConverter}}"
+                                                Font="16" 
+                                                HorizontalTextAlignment="Center"
+                                                VerticalTextAlignment="Center"
+                                                    HorizontalOptions="StartAndExpand"
+                                                    Margin="8,0,0,0"
+                                                TextColor="#3f3f3f"
+                                                VerticalOptions="Center"/>
+
+                                                    <Label 
+                                                Text="{Binding startDate,  Converter={StaticResource dateConverter}}"
+                                                Font="16" 
+                                                HorizontalTextAlignment="Center"
+                                                VerticalTextAlignment="Center"
+                                                    HorizontalOptions="StartAndExpand"
+                                                    Margin="8,0,0,0"
+                                                TextColor="#3f3f3f"
+                                                VerticalOptions="Center"/>
+
+                                                    <Label 
+                                                Text="{Binding startTime}"
+                                                Font="16" 
+                                                    Grid.Column="0"
+                                                HorizontalTextAlignment="Center"
+                                                VerticalTextAlignment="Center"
+                                                    IsVisible="{Binding isStartTimeNull}"
+                                                    HorizontalOptions="StartAndExpand"
+                                                    Margin="8,0,0,0"
+                                                TextColor="#3f3f3f"
+                                                VerticalOptions="Center"/>
+                                                </StackLayout>
+
+                                                <Label 
+                                            Text="{Binding title}"
+                                            Font="18" 
+                                                Margin="5,0,0,0"
+                                                Grid.Column="1"
+                                            TextColor="#0091da"
+                                            HorizontalOptions="CenterAndExpand" 
+                                                HorizontalTextAlignment="Center"
+                                            VerticalOptions="Center"/>
+                                            </Grid>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.Footer>
+                        <Label/>
+                    </ListView.Footer>
+                </ListView>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
